@@ -18,6 +18,19 @@ def verificar_streamer_online(channel_id):
     return False  # O streamer não está online
 
 
+def get_live_videoID(channel_id):
+    url = f"https://www.googleapis.com/youtube/v3/search?part=id&channelId={channel_id}&type=video&eventType=live&key={API_KEY}"
+
+    response = requests.get(url)
+    data = response.json()
+
+    if data["items"][0]["id"]["videoId"]:   # Percusso no Json
+        # LiveID da transmissão online
+        return (data["items"][0]["id"]["videoId"])
+
+    return "No VideoID Founded"
+
+
 def listar_streamers_online():
     online_streamers = []
     for nome, channel_id in STREAMERS.items():
@@ -28,8 +41,10 @@ def listar_streamers_online():
 
 
 # Teste: Listar quais streamers estão ao vivo
-streamers_online = listar_streamers_online()
-if streamers_online:
-    print("Streamers online:", streamers_online)
-else:
-    print("Nenhum streamer está ao vivo no momento.")
+
+get_live_videoID("UCQQfneexNE9cX88ZLyD-bQA")
+# streamers_online = listar_streamers_online()
+# if streamers_online:
+#     print("Streamers online:", streamers_online)
+# else:
+#     print("Nenhum streamer está ao vivo no momento.")
