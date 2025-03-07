@@ -1,13 +1,16 @@
+import datetime
 from config import API_KEY, STREAMERS
 from command_handler import COMMANDS
+from main import generate_clip
 from streamer_checker import get_live_chatID, get_live_videoID
 
 import requests
 import time
 
 
-CHANNEL_ID = STREAMERS["Eeires"]
+CHANNEL_ID = STREAMERS["Hina"]
 NEXT_PAGE_TOKEN = None
+VIDEOID = 0
 
 
 def get_chat_messages(live_chat_id):
@@ -38,27 +41,25 @@ def get_chat_messages(live_chat_id):
     return messages
 
 
-def check_for_commands(messages):
+def check_for_commands(messages, video_id):
     """Verifica se alguma mensagem contém um comando válido"""
     for user, message in messages:
         print(user, " - ", message)
         for command in COMMANDS:
             if message.startswith(command):
                 print(f"🎯 Comando detectado: {command} de {user}")
-                print(f"🎯 Comando detectado: {command} de {user}")
-                print(f"🎯 Comando detectado: {command} de {user}")
-                print(f"🎯 Comando detectado: {command} de {user}")
-                print(f"🎯 Comando detectado: {command} de {user}")
+                timestampMsg = datetime.datetime.utcnow()
+                generate_clip(video_id, timestampMsg)
 
 
 def monitor_chat():
     """Verifica se há uma live ativa e captura mensagens do chat"""
-    video_id = get_live_videoID(CHANNEL_ID)
-    if not video_id:
+    VIDEOID = get_live_videoID(CHANNEL_ID)
+    if not VIDEOID:
         print("❌ Nenhuma live encontrada no momento.")
         return
 
-    live_chat_id = get_live_chatID(video_id)
+    live_chat_id = get_live_chatID(VIDEOID)
     if not live_chat_id:
         print("❌ Não foi possível obter o liveChatId.")
         return
@@ -67,7 +68,8 @@ def monitor_chat():
 
     while True:
         messages = get_chat_messages(live_chat_id)
-        check_for_commands(messages)  # Verifica comandos nas mensagens
+        # Verifica comandos nas mensagens
+        check_for_commands(messages, VIDEOID)
         time.sleep(5)  # Aguarda 5 segundos antes de buscar novas mensagens
 
 

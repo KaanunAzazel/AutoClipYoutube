@@ -1,1 +1,1 @@
-COMMANDS = [".KAKAK"]
+COMMANDS = [".cp"]

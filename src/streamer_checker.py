@@ -47,7 +47,7 @@ def listar_streamers_online():
 
 # Teste: Listar quais streamers estão ao vivo
 
-videoID = get_live_videoID("UCYiIgZVotTS9K3eb7nine0g")
+videoID = get_live_videoID(STREAMERS["Hina"])
 get_live_chatID(videoID)
 # streamers_online = listar_streamers_online()
 # if streamers_online:
