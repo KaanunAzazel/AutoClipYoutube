@@ -3,7 +3,8 @@ import requests
 # Configurações
 API_KEY = "AIzaSyCtQOZbR1SwjZwqzcLOGnzW-aNVIJbwEGM"
 STREAMERS = {
-    "Hina": "UCQQfneexNE9cX88ZLyD-bQA",  # ID do canal do YouTube
+    "Hina": "UCQQfneexNE9cX88ZLyD-bQA",
+    "Eeires": "UCYiIgZVotTS9K3eb7nine0g",  # ID do canal do YouTube
 }
 
 
@@ -16,6 +17,16 @@ def verificar_streamer_online(channel_id):
     if "items" in data and len(data["items"]) > 0:
         return True  # O streamer está online
     return False  # O streamer não está online
+
+
+def get_live_chatID(video_id):
+    url = f"https://www.googleapis.com/youtube/v3/videos?part=liveStreamingDetails&id={video_id}&key={API_KEY}"
+
+    response = requests.get(url)
+    data = response.json()
+
+    if data["items"][0]["liveStreamingDetails"]:
+        return (data["items"][0]["liveStreamingDetails"]["activeLiveChatId"])
 
 
 def get_live_videoID(channel_id):
@@ -42,7 +53,8 @@ def listar_streamers_online():
 
 # Teste: Listar quais streamers estão ao vivo
 
-get_live_videoID("UCQQfneexNE9cX88ZLyD-bQA")
+videoID = get_live_videoID("UCYiIgZVotTS9K3eb7nine0g")
+get_live_chatID(videoID)
 # streamers_online = listar_streamers_online()
 # if streamers_online:
 #     print("Streamers online:", streamers_online)
