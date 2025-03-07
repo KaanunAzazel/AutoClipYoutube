@@ -44,7 +44,6 @@ def get_chat_messages(live_chat_id):
 def check_for_commands(messages, video_id):
     """Verifica se alguma mensagem contém um comando válido"""
     for user, message in messages:
-        print(user, " - ", message)
         for command in COMMANDS:
             if message.startswith(command):
                 print(f"🎯 Comando detectado: {command} de {user}")
